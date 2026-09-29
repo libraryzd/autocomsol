@@ -1,0 +1,17 @@
+# Local runtimes, generated simulation data, and user configuration
+.runtime/
+.venv/
+__pycache__/
+*.pyc
+runs/
+setup-evidence/
+dist/
+*.mph
+*.mphbin
+*.mph.lock
+*.log
+*.bak
+config.toml
+prepare_session.m
+.DS_Store
+Thumbs.db
