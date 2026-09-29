@@ -39,7 +39,7 @@ The skill specifies the workflow. MCP provides the execution connection. LiveLin
 - Prepare a simulation plan for confirmation before running a new problem.
 - Generate MATLAB source files, capture failures, and verify targeted fixes.
 - First get the requested model running, then offer independent mesh, relative-tolerance and reference-case validation choices, including no further validation.
-- Deliver a solved `.mph`, MATLAB sources, exported results, figures, reports, and artifact hashes.
+- Deliver a solved `.mph`, MATLAB sources, results, figures, a final-method Word plan, a Word report, and artifact hashes.
 - Retain concise, verified troubleshooting lessons for future tasks.
 
 ## Requirements
@@ -121,7 +121,7 @@ inputs and propose the mesh, solver, result exports, and validation criteria.
 Wait for my confirmation before running the model.
 ```
 
-The first response to a new simulation must show a concrete plan in the chat, save a revisioned `plan.md` as `AWAITING_CONFIRMATION`, and stop. Only after your confirmation does Codex write and run the simulation programs. A file-only plan or an internal checklist is insufficient. Connection checks and research may run beforehand; sharing MATLAB or approving tool access does not approve a simulation. The bundled acceptance simulation follows the same rule.
+The first response to a new simulation must show a concrete plan in the chat, save a revisioned `plan.md` source and `documents/plan-proposed-vN.docx` as awaiting confirmation, and stop. Only after your confirmation does Codex write and run the simulation programs. A file-only plan or an internal checklist is insufficient. Connection checks and research may run beforehand; sharing MATLAB or approving tool access does not approve a simulation. The bundled acceptance simulation follows the same rule.
 
 After confirmation, routine code repairs within the approved plan can continue. Changes to physical assumptions, boundary conditions, agreed accuracy, or compute scope require a revised plan and confirmation. Approval already given for the same concrete plan remains valid; an explicit instruction to skip confirmation overrides the default workflow. Uncertain API details should be checked against documentation for the installed COMSOL version.
 
@@ -147,17 +147,24 @@ Reports distinguish passed, failed, blocked and skipped studies. Choosing none d
 
 ## Deliverables
 
+At completion, the plan is rewritten to describe the **method actually adopted**, including changes made during debugging and selected validation. Original proposals and their approvals remain in revision history. The final plan begins with the simulation task, then scientific analysis/modeling rationale and necessary theory, and then concrete COMSOL settings. The report uses the same final model/settings and records the actual results and validation status.
+
+Both the plan and report are delivered as **Word `.docx` files in the language of the simulation-task request**: Chinese for a Chinese request, English for an English request, unless another language is explicitly requested. Formulas and inline mathematical variables use **native editable Word equations (OMML)**, including inside tables. Equation images and raw LaTeX are not substitutes. Document consistency, equation representation and rendered page layout are checked before delivery. See [Word delivery requirements](references/word-delivery.md).
+
 Typical task output:
 
 ```text
 simulation-run/
-├── plan.md
+├── plan.md              # Current working source
+├── plans/revisions/     # Earlier proposals and actual approvals
+├── documents/
+│   ├── simulation-plan.docx    # Final adopted method
+│   └── simulation-report.docx # Results and interpretation
 ├── config.json
 ├── src/                 # Build, solve, extract, postprocess, validate
 ├── models/final.mph
 ├── results/             # MAT/CSV and units/solution metadata
 ├── figures/
-├── report.md
 ├── environment.json
 ├── manifest.json        # Artifact hashes
 └── logs/
@@ -165,7 +172,7 @@ simulation-run/
     └── lessons.jsonl    # Verified fixes only
 ```
 
-Exact files depend on the task. The included benchmark records its fixed inputs in `plan.md`. Independent postprocessing reads exported data and does not require a live COMSOL model.
+Exact files depend on the task; both final Word documents are required. Markdown sources are supplementary. The historical benchmark records fixed inputs in `plan.md` and generates a Markdown report; its raw outputs require a final-method Word plan/report to meet the current delivery contract. Independent postprocessing reads exported data and does not require a live COMSOL model.
 
 ## Included acceptance benchmark
 

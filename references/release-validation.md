@@ -1,5 +1,11 @@
 # Release validation
 
+## 1.0.3 final-method Word delivery contract (2026-09-29)
+
+Final plans must be rewritten against the actual adopted model/code/settings while preserving proposal and approval history. Plans introduce the simulation task, explain scientific modeling rationale/necessary theory, then specify COMSOL settings. User-facing proposals, final plans and reports use DOCX in the simulation-task request language, with native editable OMML formulas and mathematical variables. Added a report outline and self-contained document-generation/consistency/equation/layout requirements; the final settings and validation outcome must agree across documents and model evidence.
+
+This update changes skill instructions, outlines and documentation. Static skill/package/link checks cover these changes; no task-specific Word documents, native-equation render/editability acceptance or new COMSOL runs were produced for this release. The required document checks apply when real task deliverables are generated. Historical regression outputs do not constitute acceptance of the Word workflow.
+
 ## 1.0.2 optional validation workflow (2026-09-29)
 
 The requested task now reaches a runnable, saved baseline before the user chooses any combination of mesh, relative-tolerance and reference-case validation, or no further validation. Selected mesh/tolerance studies use three levels, compare the first two with the third using declared metrics, require <3%, and replan until passing or a real blocker. Literature validation uses uploaded cases first, requests upload/search direction when absent, and skips with an explicit no-case-found status after an unsuccessful authorized search.
