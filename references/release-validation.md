@@ -1,4 +1,12 @@
-# Release 1.0.0 validation
+# Release validation
+
+## 1.0.1 workflow correction (2026-09-29)
+
+Following a report that execution skipped the visible plan, the skill now explicitly requires a plan in the chat, a revisioned `plan.md`, and a turn ending while awaiting confirmation before simulation programming/model execution. The default prompt, setup/benchmark instructions and both READMEs follow that rule. A reusable plan template records actual confirmation without inventing approval. Existing approval of a concrete plan and explicit user workflow overrides remain valid.
+
+This is a workflow-instruction correction, not a server-side execution lock. Static package validation does not prove agent behavior; a fresh-chat behavioral acceptance test remains outstanding. MATLAB solver sources and the results below are unchanged; no new scientific benchmark result is claimed for this correction.
+
+## 1.0.0 simulation validation
 
 Validated on 2026-09-28, Windows x64, official MATLAB MCP v0.14.0, MATLAB R2025b, COMSOL 6.3 build 290. This COMSOL/MATLAB combination is outside COMSOL 6.3's officially listed MATLAB releases; passing this test does not expand vendor support.
 

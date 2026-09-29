@@ -1,6 +1,8 @@
 # Infrastructure acceptance benchmark
 
-Purpose: test official MCP -> existing MATLAB -> LiveLink -> COMSOL solve -> save/reload -> numeric export -> independent MATLAB plotting. This is a setup test authorized by the setup request, not an application simulation.
+Purpose: test official MCP -> existing MATLAB -> LiveLink -> COMSOL solve -> save/reload -> numeric export -> independent MATLAB plotting. This is a synthetic infrastructure test, not an application simulation.
+
+Approval: this bundled plan is a template, not evidence of user confirmation. Present it in the chat and wait for confirmation before execution, unless the user already approved this concrete plan or explicitly overrode that workflow. Record the actual approval in the task's delivered plan.
 
 Model: 2D rectangular solid, length L=0.1 m and height H=0.02 m. Constant conductivity k=10 W/(m K); left T=400 K, right T=300 K; upper/lower boundaries insulated. No heat source. Stationary heat transfer. Density 1000 kg/m^3 and heat capacity 1000 J/(kg K) are synthetic constants irrelevant to the stationary analytic result. No experimental material claim.
 

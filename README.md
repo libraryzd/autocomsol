@@ -115,7 +115,11 @@ inputs and propose the mesh, solver, result exports, and validation criteria.
 Wait for my confirmation before running the model.
 ```
 
-After confirmation, routine code repairs within the approved plan can continue. Changes to physical assumptions, boundary conditions, agreed accuracy, or compute scope require a revised plan. Uncertain API details should be checked against documentation for the installed COMSOL version.
+The first response to a new simulation must show a concrete plan in the chat, save a revisioned `plan.md` as `AWAITING_CONFIRMATION`, and stop. Only after your confirmation does Codex write and run the simulation programs. A file-only plan or an internal checklist is insufficient. Connection checks and research may run beforehand; sharing MATLAB or approving tool access does not approve a simulation. The bundled acceptance simulation follows the same rule.
+
+After confirmation, routine code repairs within the approved plan can continue. Changes to physical assumptions, boundary conditions, agreed accuracy, or compute scope require a revised plan and confirmation. Approval already given for the same concrete plan remains valid; an explicit instruction to skip confirmation overrides the default workflow. Uncertain API details should be checked against documentation for the installed COMSOL version.
+
+If an older chat skipped this step, start a new chat with the updated skill and explicitly invoke `$autocomsol`. These are agent workflow instructions, not an execution lock inside the official MATLAB MCP Server.
 
 The [simulation workflow](references/simulation.md) defines validation, retry boundaries, provenance, and delivery requirements.
 

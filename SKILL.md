@@ -1,6 +1,6 @@
 ---
 name: autocomsol
-description: Set up the official MATLAB MCP Server and drive COMSOL through an existing COMSOL with MATLAB session. Plan simulations for user confirmation, build and debug MATLAB programs, validate results, and deliver reproducible models, data, reports, and verified error lessons.
+description: Set up the official MATLAB MCP Server and drive COMSOL through an existing COMSOL with MATLAB session. For new simulations, first show a concrete plan and wait for user confirmation, then build, debug, validate, and deliver reproducible models, data, reports, and verified error lessons.
 ---
 
 # AutoCOMSOL
@@ -8,6 +8,14 @@ description: Set up the official MATLAB MCP Server and drive COMSOL through an e
 Use the official MathWorks MATLAB MCP Server in `existing` session mode and COMSOL LiveLink for MATLAB. This package automates Windows x64 setup; other platforms require the official platform-specific installation. Never infer a working connection or a valid physical model from installed software or running processes.
 
 For what was actually tested and the current limits, read [release-validation.md](references/release-validation.md) when assessing readiness or troubleshooting portability.
+
+## First response to a new simulation: plan, then wait
+
+Before writing task-specific simulation programs or creating/modifying/meshing/solving a COMSOL model, present a concrete plan **in the chat**, save it as the task's `plan.md`, and end the turn awaiting the user's confirmation. A plan saved only in a file, a progress update, or an internal task checklist does not satisfy this requirement. Use [the plan template](assets/simulation-plan.md) and the details below. If decisive inputs are missing, show the proposed approach and those questions; do not invent values or present an incomplete plan as ready to execute.
+
+Before confirmation, installation/connection checks, read-only version/model inspection, research and plan preparation may proceed within the requested scope. A request to “do this simulation”, MATLAB session sharing, MCP/tool permission, or approval to install/publish the skill is not confirmation of a specific simulation plan. The bundled acceptance simulation also follows this rule; a connection check alone must not trigger it.
+
+Record plan revision and status `AWAITING_CONFIRMATION`. After the user confirms the displayed revision, record `APPROVED` and the actual user message establishing approval, then proceed. Never generate the user's approval yourself, treat silence as approval, or continue to execution in the turn that first proposes the plan. If the conversation already contains approval of the same concrete plan, honor it without asking again. Explicit user instructions overriding the confirmation workflow take precedence; record that instruction accurately. See [simulation.md](references/simulation.md) for continuation and revision handling.
 
 ## Setup or repair a connection
 
@@ -21,7 +29,7 @@ Discover native MATLAB MCP tools first. If the current chat has not loaded newly
 
 Read [simulation.md](references/simulation.md). Inspect the live environment and relevant [bundled verified lessons](references/verified-lessons.jsonl) plus the user's accumulated lesson store. Research APIs against the installed COMSOL version using local help, official documentation and examples; use third-party material as unverified leads. Save source URLs/version and distinguish assumptions from supplied facts.
 
-Produce a concrete plan covering physics, units, materials, geometry, boundary/initial conditions, study, parameters, mesh, solver, requested outputs, validation criteria and compute/retry budget. Obtain the user's confirmation before a new simulation. Prior authorization to a concrete benchmark or plan persists: do not request confirmation again. Missing scientifically decisive inputs must not be invented.
+Produce a concrete plan covering physics, units, materials, geometry, boundary/initial conditions, study, parameters, mesh, solver, requested outputs, validation criteria and compute/retry budget. Follow the plan-and-wait step above. Missing scientifically decisive inputs must not be invented.
 
 ## Execute, validate, deliver
 
