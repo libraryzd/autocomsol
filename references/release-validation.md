@@ -1,5 +1,11 @@
 # Release validation
 
+## 1.0.2 optional validation workflow (2026-09-29)
+
+The requested task now reaches a runnable, saved baseline before the user chooses any combination of mesh, relative-tolerance and reference-case validation, or no further validation. Selected mesh/tolerance studies use three levels, compare the first two with the third using declared metrics, require <3%, and replan until passing or a real blocker. Literature validation uses uploaded cases first, requests upload/search direction when absent, and skips with an explicit no-case-found status after an unsuccessful authorized search.
+
+The package includes a local three-checkbox form that generates a message for the user to send to the chat. It does not invoke MATLAB or submit user choices automatically. The historical MATLAB regression runners remain unchanged and are explicitly excluded from the baseline-first path. No new COMSOL convergence results or fresh-chat behavioral acceptance are claimed. Static package/link checks and checkbox-form interaction tests cover the new artifacts; live simulation-loop acceptance remains outstanding.
+
 ## 1.0.1 workflow correction (2026-09-29)
 
 Following a report that execution skipped the visible plan, the skill now explicitly requires a plan in the chat, a revisioned `plan.md`, and a turn ending while awaiting confirmation before simulation programming/model execution. The default prompt, setup/benchmark instructions and both READMEs follow that rule. A reusable plan template records actual confirmation without inventing approval. Existing approval of a concrete plan and explicit user workflow overrides remain valid.

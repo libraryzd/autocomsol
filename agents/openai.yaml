@@ -1,4 +1,4 @@
 interface:
   display_name: "AutoCOMSOL"
   short_description: "通过官方 MATLAB MCP 规划、运行和验证 COMSOL 仿真，并交付可复现结果"
-  default_prompt: "使用 $autocomsol，先在聊天中展示具体仿真方案并保存 plan.md，然后停下来等我确认；确认后再编写和运行仿真程序。"
+  default_prompt: "使用 $autocomsol，先展示方案并等我确认；确认后先跑通模型，再让我勾选网格、相对容差和算例验证，按选择验证或直接继续交付。"

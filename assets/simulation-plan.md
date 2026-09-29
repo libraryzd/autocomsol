@@ -20,9 +20,17 @@ Specify physics/couplings, simplifications, boundary/initial conditions, steady/
 
 Specify mesh/refinement regions, solver, time/frequency discretization if relevant, and convergence strategy. Distinguish proposed settings from verified settings.
 
-## Validation / 正确性检查
+## Baseline and optional validation / 初步跑通与可选验证
 
-Specify applicable physical checks, reference/analytic comparisons, mesh/time/tolerance sensitivity and acceptance thresholds. Identify what cannot yet be validated.
+State what constitutes running the requested model successfully and which outputs must be available. Preserve this baseline before asking the user to choose further validation.
+
+After baseline success, offer three independent choices (selection pending until the user responds):
+
+- [ ] Mesh validation / 网格验证：coarse, medium, fine; key-result differences <3%.
+- [ ] Relative-tolerance validation / 相对容差验证：loose, medium, tight; key-result differences <3%.
+- [ ] Reference-case validation / 算例验证：use uploaded references first; otherwise ask for an upload or explicit web-search instruction.
+
+The user may select any combination or no further validation. Initial plan approval does not select these options. Define key comparison quantities and a meaningful normalization for near-zero values before running a selected study; retain them through all rounds. Do not schedule unselected studies.
 
 ## Outputs and budget / 交付与预算
 

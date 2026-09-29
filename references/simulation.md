@@ -4,7 +4,7 @@
 
 Read user inputs, actual preflight and matching records in the user's shared lesson store (suggested path: project `knowledge/lessons.jsonl`, or a user-designated cross-project location). No log file constitutes authority to change the requested model.
 
-Use [the plan template](../assets/simulation-plan.md) to save the proposed plan with: goal and observables; geometry and dimensions; materials with units/range/source; physics and couplings; boundary/initial conditions; steady/transient/frequency study; sweep points; mesh strategy and sensitive regions; solver strategy; validation metrics and thresholds; data extraction coordinates/datasets/solution indices; compute budget; open assumptions. Clearly distinguish numerical settings from physical assumptions.
+Use [the plan template](../assets/simulation-plan.md) to save the proposed plan with: goal and observables; geometry and dimensions; materials with units/range/source; physics and couplings; boundary/initial conditions; steady/transient/frequency study; sweep points; initial mesh/solver strategy; key outputs suitable for later optional validation; data extraction coordinates/datasets/solution indices; compute budget; open assumptions. Clearly distinguish numerical settings from physical assumptions. Plan confirmation authorizes getting the baseline running; further validation is selected after that milestone.
 
 Show the substantive plan in the user's language in the chat, including inputs/assumptions, modeling choices, validation and budget; a file link alone is insufficient. Link `plan.md`, identify the revision, and end the response with a clear request such as “请确认方案 v1；回复‘确认，按 v1 执行’，或告诉我需要修改的地方。” Explain that this plan confirmation is required by this skill's plan-and-wait rule. Stop before task-specific simulation programming or model execution. Missing decisive inputs keep the plan in `DRAFT`; a reviewable plan is `AWAITING_CONFIRMATION`.
 
@@ -20,15 +20,17 @@ Persist full exception (`getReport(err,'extended','hyperlinks','off')`) plus sta
 
 Use the smallest reproducible failing step. Retry a targeted repair with evidence. Do not fix convergence by silently deleting physics, altering materials/BCs or loosening agreed tolerances. Same failure three times without new evidence: stop and explain the concrete dependency. A long solver call may outlive transport; observe before retrying.
 
-## Verification
+## Baseline success and optional validation
 
-Required checks depend on the task: dimensions/units/selections; material consistency; finite results; appropriate conservation law; benchmark/limiting solution; mesh, time step and solver tolerance sensitivity; singularity interpretation; exact result selection and sweep indexing. Identify which checks passed, failed, or remain unperformed. Never present a pretty plot as validation.
+Check that the implementation matches the task, geometry/selections/units are usable, the solve completes, and the requested dataset/solution outputs are present and finite where expected. This establishes a runnable baseline, not mesh independence or physical validity. Save that baseline before presenting the three validation choices in [validation.md](validation.md). Wait for the user's selection; do not silently select all validations from the original plan.
 
-Save `.mph` with requested solution data. Reload with a new unique model tag and compare requested quantities. Deliver sources able to rebuild from explicit inputs. Independent postprocessing must load exported data rather than assume a live `model` in base workspace. A fresh process reproducibility test is distinct from same-session reload; report which was done.
+If no further validation is selected, continue the requested task with this baseline. Otherwise perform only the selected studies, preserve each round and record pass/fail/skip/unavailable separately. The <3% refinement criterion applies to mesh/tolerance sensitivity, not automatically to literature agreement. Never present a plot or a solver success as physical validation.
+
+Save `.mph` with requested solution data and deliver sources able to rebuild from explicit inputs. Independent postprocessing must load exported data rather than assume a live `model` in base workspace. Do not add a reload/re-solve requirement when further validation was declined. If requested, record save/reload comparisons and fresh-process reproducibility tests separately from the three optional studies.
 
 ## Suggested deliverable structure
 
-`plan.md`, `config.json`, `src/` (run_all/build/solve/extract/postprocess/validate), `models/final.mph`, `results/` (MAT/CSV plus units/coordinates/dataset/solution/parameter metadata), `figures/`, `report.md`, `manifest.json`, `logs/`. Include external input data or clearly identify missing dependencies. The report states setup, assumptions, physical interpretation, validation evidence and limits, rerun instructions and compatibility. PDF/DOCX are optional unless requested.
+`plan.md`, `config.json`, `src/` (run_all/build/solve/extract/postprocess and selected validation scripts), `models/baseline.mph`, `models/final.mph`, `results/` (MAT/CSV plus units/coordinates/dataset/solution/parameter metadata), `figures/`, `report.md`, `manifest.json`, `logs/`. Record selection and per-study outcomes in `results/validation-status.json`; use `validation/` for selected study rounds. Include external input data or clearly identify missing dependencies. The report states setup, assumptions, physical interpretation, actual validation choices/evidence/limits, rerun instructions and compatibility. PDF/DOCX are optional unless requested.
 
 Manifest: run ID, time, MATLAB/COMSOL/MCP versions, source/input hashes, output hashes and verification status. Do not include credentials, license keys or session secrets.
 

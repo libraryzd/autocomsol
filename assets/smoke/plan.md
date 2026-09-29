@@ -1,5 +1,7 @@
 # Infrastructure acceptance benchmark
 
+This is the fixed historical full-regression specification, including two meshes and analytic/reload checks. It is not the default baseline-first optional-validation workflow. For ordinary setup/task use, propose a single baseline from the geometry below, then ask the user to select validation under `references/validation.md`; selected mesh/tolerance studies use three levels and the <3% criterion. Run the unmodified full-regression entrypoint only when the user explicitly requests that complete workflow.
+
 Purpose: test official MCP -> existing MATLAB -> LiveLink -> COMSOL solve -> save/reload -> numeric export -> independent MATLAB plotting. This is a synthetic infrastructure test, not an application simulation.
 
 Approval: this bundled plan is a template, not evidence of user confirmation. Present it in the chat and wait for confirmation before execution, unless the user already approved this concrete plan or explicitly overrode that workflow. Record the actual approval in the task's delivered plan.

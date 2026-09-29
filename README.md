@@ -17,9 +17,15 @@ flowchart TD
     C --> D[Official MATLAB MCP Server]
     D --> E[Existing COMSOL with MATLAB session]
     E --> F[LiveLink: build and solve the COMSOL model]
-    F --> G{Execution and validation results}
-    G -->|Targeted repair within approved scope| D
-    G -->|Passed| H[Export data and postprocess in MATLAB]
+    F --> G{Baseline runs successfully?}
+    G -->|No: targeted repair| D
+    G -->|Yes: save baseline| V{User selects optional validations}
+    V -->|None| H[Export data and postprocess in MATLAB]
+    V -->|Any combination| W[Mesh / relative tolerance / reference case]
+    W --> X{Selected studies complete?}
+    X -->|Refinement difference at least 3%| W
+    X -->|Passed or explicitly skipped| H
+    X -->|Blocked or failed| R[Preserve results and report next step]
     H --> I[Model, sources, data, figures, report, and lessons]
 ```
 
@@ -32,7 +38,7 @@ The skill specifies the workflow. MCP provides the execution connection. LiveLin
 - Back up Codex configuration and preserve unrelated MCP entries.
 - Prepare a simulation plan for confirmation before running a new problem.
 - Generate MATLAB source files, capture failures, and verify targeted fixes.
-- Check task-specific numerical and physical criteria instead of treating solver completion as validation.
+- First get the requested model running, then offer independent mesh, relative-tolerance and reference-case validation choices, including no further validation.
 - Deliver a solved `.mph`, MATLAB sources, exported results, figures, reports, and artifact hashes.
 - Retain concise, verified troubleshooting lessons for future tasks.
 
@@ -123,6 +129,22 @@ If an older chat skipped this step, start a new chat with the updated skill and 
 
 The [simulation workflow](references/simulation.md) defines validation, retry boundaries, provenance, and delivery requirements.
 
+## Choose validation after the baseline runs
+
+Once the requested model runs and its baseline is saved, Codex stops and asks which further studies you want:
+
+- [ ] Mesh validation
+- [ ] Relative-tolerance validation
+- [ ] Reference-case validation
+
+Choose any combination, or explicitly choose **no further validation** to continue with the working baseline. Initial plan approval does not select these studies. A portable [checkbox form](assets/validation-choice.html) is included for hosts without native multi-select controls; it generates your choice for you to send back to the chat. Unsubmitted selections do not start a simulation.
+
+Mesh validation plans coarse/medium/fine levels. Relative-tolerance validation plans loose/medium/tight levels on a fixed mesh. Each study compares the first two levels with the third and requires all declared key-result differences to be **strictly below 3%**. Otherwise Codex plans a new triplet and repeats until it passes, subject to actual execution/resource limits. A blocker remains incomplete, not a pass. Metrics and meaningful normalization for near-zero quantities are fixed before testing. These differences measure sensitivity, not unknown true error.
+
+Reference-case validation first uses a relevant case in your uploaded references. If none was provided, Codex asks you to upload one or explicitly request an online search. It then reproduces a suitable case if found; if none is found, it reports that fact, skips that study, and continues. Literature agreement uses the reference/task criterion, not an automatic 3% threshold. See the [complete validation procedure](references/validation.md).
+
+Reports distinguish passed, failed, blocked and skipped studies. Choosing none does not trigger other convergence or reproducibility solves under a different name.
+
 ## Deliverables
 
 Typical task output:
@@ -148,6 +170,8 @@ Exact files depend on the task. The included benchmark records its fixed inputs 
 ## Included acceptance benchmark
 
 The [steady-conduction example](assets/smoke/plan.md) uses a 0.1 m × 0.02 m rectangle, constant conductivity, fixed left/right temperatures, and insulated upper/lower edges. It compares COMSOL with an analytic solution, runs two mesh settings, saves and reloads the model, exports data, and generates MATLAB figures.
+
+Its `run_smoke`/`run_all` entrypoints reproduce the historical full regression in one call; they do not implement the new optional three-level workflow. Ordinary task/setup use starts from a single baseline using the separate model functions, then asks for validation choices. Run the full legacy entrypoint only when explicitly requesting that complete regression.
 
 ![Synthetic steady-conduction validation](docs/images/temperature-validation.png)
 

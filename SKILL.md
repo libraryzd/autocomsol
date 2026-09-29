@@ -1,6 +1,6 @@
 ---
 name: autocomsol
-description: Set up the official MATLAB MCP Server and drive COMSOL through an existing COMSOL with MATLAB session. For new simulations, first show a concrete plan and wait for user confirmation, then build, debug, validate, and deliver reproducible models, data, reports, and verified error lessons.
+description: Set up the official MATLAB MCP Server and drive COMSOL through an existing COMSOL with MATLAB session. Show a simulation plan for confirmation, get the model running, then offer optional mesh, relative-tolerance and reference-case validation before delivering models, data, reports and verified error lessons.
 ---
 
 # AutoCOMSOL
@@ -29,7 +29,7 @@ Discover native MATLAB MCP tools first. If the current chat has not loaded newly
 
 Read [simulation.md](references/simulation.md). Inspect the live environment and relevant [bundled verified lessons](references/verified-lessons.jsonl) plus the user's accumulated lesson store. Research APIs against the installed COMSOL version using local help, official documentation and examples; use third-party material as unverified leads. Save source URLs/version and distinguish assumptions from supplied facts.
 
-Produce a concrete plan covering physics, units, materials, geometry, boundary/initial conditions, study, parameters, mesh, solver, requested outputs, validation criteria and compute/retry budget. Follow the plan-and-wait step above. Missing scientifically decisive inputs must not be invented.
+Produce a concrete plan covering physics, units, materials, geometry, boundary/initial conditions, study, parameters, initial mesh/solver, requested outputs and compute/retry budget. Identify key results for later optional validation, but do not treat initial plan approval as selection of those validations. Follow the plan-and-wait step above. Missing scientifically decisive inputs must not be invented.
 
 ## Execute, validate, deliver
 
@@ -41,8 +41,20 @@ For an error: capture the full exception, classify its cause, look up verified r
 
 Treat tool timeouts as **unknown execution state**. Check logs/output/status before resubmitting. MATLAB may be unable to run a second command while solving. A status JSON file is not proof of a live process. This release has no guaranteed asynchronous cancellation or process supervisor; do not promise either. Never kill the user's MATLAB/COMSOL to resolve a timeout.
 
-Validate units/selections and task-specific physical/numerical criteria. Compare with a benchmark when available; perform appropriate mesh/time/tolerance studies. Separate numerical verification from physical validation, and report unchecked items. A solver's success is not proof of correctness.
+First get the model running according to the task: required physics/conditions are implemented, the solve succeeds, and requested outputs are available and usable. Preserve this baseline `.mph`, source, settings and results. Do not automatically launch mesh, relative-tolerance or reference-case validation to achieve this milestone.
 
-Deliver `.mph` with required solution data, all simulation and independent result-processing `.m` sources, raw/exported data with units and solution metadata, plots, confirmed plan, verification results, report, environment/manifest and logs. Reload the saved model and reproduce results before marking delivery validated. Include external input files or document their unresolved dependencies.
+## After the baseline runs: let the user select validation
+
+Read [validation.md](references/validation.md). Show evidence that the baseline runs, then offer **three independent checkboxes**: mesh validation, relative-tolerance validation, and reference-case validation. The user may select any combination or explicitly choose no further validation. Stop and wait for the selection; silence, initial plan approval and a preselected UI option are not a selection. Use a native multi-select UI if available; otherwise use the bundled [checkbox form](assets/validation-choice.html) or the documented chat fallback.
+
+Run only the selected validations. Mesh validation uses coarse/medium/fine meshes; relative-tolerance validation uses loose/medium/tight settings. For each selected study, plan three distinct levels, compare declared key outputs against the finest/tightest result, and require **both other levels to differ by strictly less than 3%**. If not, plan and run a new triplet until it passes; do not declare completion just because three refinement rounds elapsed. Preserve settings, results and error history. Genuine execution/resource blockers pause the selected study with an honest status; they never count as a pass.
+
+For reference-case validation, inspect user-uploaded references first and directly reproduce a sufficiently specified relevant case. If none was supplied, ask the user to upload one or send “请直接网上查找相关算例”; wait before searching for a substitute. When explicitly requested, research suitable cases and validate a reproducible one. If none is found, state “未调研到相关算例”, mark that validation skipped and continue the task. Missing decisive benchmark inputs must not be invented. Details and numerical comparison rules are in [validation.md](references/validation.md).
+
+If the user chooses no further validation, continue extraction, MATLAB visualization and delivery with the already working baseline. Do not add other convergence/physical-validation studies as a substitute. Report “model ran successfully; further validation skipped by user”, not “validated”. A solver's success or a <3% sensitivity result alone is not proof of physical correctness.
+
+## Deliver results
+
+Deliver `.mph` with required solution data, all simulation and independent result-processing `.m` sources, raw/exported data with units and solution metadata, plots, confirmed plan, the user's validation choices and actual outcomes, report, environment/manifest and logs. File existence/readability and complete exports are delivery checks, not permission for additional solves. Do not force a save/reload comparison or reproducibility solve after the user declines further validation; perform one only when requested/agreed. Include external input files or document their unresolved dependencies.
 
 Keep full logs per run. Write only proven fixes to a compact shared `lessons.jsonl` with version, symptom, cause, fix and verification evidence; do not store credentials. Search it before subsequent work. See [simulation.md](references/simulation.md) for the record format.
