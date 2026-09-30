@@ -35,13 +35,15 @@ Structure every plan in this order: **simulation task introduction; scientific a
 
 Persist source files before executing them. Prefer separate build/solve/extract/postprocess/validate functions and an entrypoint with explicit inputs. Use unique model tags and task directories, stable named selections, explicit result datasets and solution indices. Checkpoints and logs must survive a failed stage.
 
+For initial model bring-up, prefer the study's **automatically generated default solver sequence**, with the applicable main iteration limit set to **200** before the first solve. Read [initial-solver.md](references/initial-solver.md): discover actual nodes/properties, preserve default solver architecture and convergence tests, set/read back the applicable cap, and record exceptions. Do not hand-build a custom solver tree first or set every unrelated iterative subsolver to 200. This is the user's starting preference, not a claim that 200 is COMSOL's default or universally optimal.
+
 Use the existing MCP tools `check_matlab_code`, `evaluate_matlab_code` and `run_matlab_file` when exposed; inspect live schemas rather than assume fixed arguments. The shipped smoke example is an infrastructure benchmark, not a universal physics template.
 
 For an error: capture the full exception, classify its cause, look up verified relevant lessons, make a targeted change, and rerun the affected stage. Continue routine repairs within the approved plan. Ask for a revised plan only when the physical problem, agreed accuracy, resources or scope must change. Default to at most three attempts for the same failure without new evidence; report a concrete blocker instead of looping.
 
 Treat tool timeouts as **unknown execution state**. Check logs/output/status before resubmitting. MATLAB may be unable to run a second command while solving. A status JSON file is not proof of a live process. This release has no guaranteed asynchronous cancellation or process supervisor; do not promise either. Never kill the user's MATLAB/COMSOL to resolve a timeout.
 
-First get the model running according to the task: required physics/conditions are implemented, the solve succeeds, and requested outputs are available and usable. Preserve this baseline `.mph`, source, settings and results. Do not automatically launch mesh, relative-tolerance or reference-case validation to achieve this milestone.
+First get the model running according to the task: required physics/conditions are implemented, the solve succeeds, and requested outputs are available and usable. Preserve the **first** successful baseline `.mph` without replacing it with later tuning attempts. Preserve its source/settings/evidence separately under the [delivery layout](references/delivery-layout.md). Do not automatically launch mesh, relative-tolerance or reference-case validation to achieve this milestone.
 
 ## After the baseline runs: let the user select validation
 
@@ -54,6 +56,8 @@ For reference-case validation, inspect user-uploaded references first and direct
 If the user chooses no further validation, continue extraction, MATLAB visualization and delivery with the already working baseline. Do not add other convergence/physical-validation studies as a substitute. Report “model ran successfully; further validation skipped by user”, not “validated”. A solver's success or a <3% sensitivity result alone is not proof of physical correctness.
 
 ## Deliver results
+
+Follow [delivery-layout.md](references/delivery-layout.md). `models/` contains only the first successful baseline, actual validation `.mph` models and final models covering each requested task, plus `readme.md`. `results/` contains only validation results and final-task results (with essential per-result metadata), plus `readme.md`. Keep debugging attempts/checkpoints and operational records outside those two folders. Add `source/readme.md` describing input/reference files and `src/readme.md` describing every delivered program, its structure/function, dependencies, exact run commands, execution order and the two user-choice pauses. Use the task language for all four readmes. Curate new delivery folders without deleting existing user files, live locks or unique run evidence.
 
 Read [word-delivery.md](references/word-delivery.md). After execution and selected validation, **rewrite the final plan to match the actual adopted model, code, settings and method**, including successful fixes and the final mesh/tolerance choice. Preserve earlier plans and their actual approvals in revision history; do not merely append an error log to an obsolete plan. Reconcile the final plan and report against the saved model/configuration, executed sources, final run metadata and validation records. Documentation cleanup within approved scope does not require another approval; it must never retroactively authorize a substantive unapproved model change.
 

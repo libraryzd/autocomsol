@@ -33,6 +33,8 @@ Specify software versions, model/component dimension, geometry/dimensions/units,
 
 Specify mesh/refinement regions and counts when available, solver and applied tolerances, time/frequency discretization if relevant, solve sequence and extraction datasets/solution indices/coordinates. Distinguish proposed settings from implemented settings. Identify actual final model/source/run references.
 
+For initial bring-up, prefer the study-generated default solver sequence and an applicable main maximum-iteration cap of 200. Record the actual node/property, active stopping mode and read-back value, or why the cap is not applicable. Preserve default architecture/tolerances unless evidence requires a targeted change; the final plan records the settings actually used.
+
 ## 4 Baseline and optional validation / 初步跑通与可选验证
 
 State what constitutes running the requested model successfully and which outputs must be available. Preserve this baseline before asking the user to choose further validation.
@@ -50,6 +52,8 @@ At delivery replace pending instructions with the actual user choices, performed
 ## 5 Outputs and execution limits / 交付与执行限制
 
 Specify model/source/data/figure/report outputs, extraction locations and solution selection, output directory, compute limits, retry limits and timeout handling. Mark runtime estimates as estimates.
+
+Map each requested task to a final model/result set. `models/` retains only the first successful baseline, actual validation models and final-task models plus `readme.md`; `results/` retains validation/final-task data and essential result metadata plus `readme.md`. Include `source/readme.md` for original inputs/references and `src/readme.md` for file functions, program architecture, exact commands and execution order. Keep exploratory/debug artifacts in `work/` and operational status in `logs/`.
 
 ## 6 Confirmation and version record / 确认与版本记录
 

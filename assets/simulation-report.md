@@ -27,7 +27,7 @@ Summarize consequential changes from the original plan, why they were made, evid
 
 ## Deliverables and reproduction / 交付与复现
 
-List final model, simulation/postprocessing sources, inputs, result files, figures and final plan. Explain environment, entrypoints, dependencies and execution limits. Describe only reproduction checks actually performed; generating reproduction instructions does not authorize another solve.
+List the first successful baseline, actual validation models and final models/results mapped to every requested task, along with simulation/postprocessing sources, inputs, figures and final plan. Link the readmes in `models/`, `results/`, `source/` and `src/`; the last includes actual architecture, commands, execution order and user-choice pauses. Explain environment, entrypoints, dependencies and execution limits. Describe only reproduction checks actually performed; generating reproduction instructions does not authorize another solve.
 
 ## Sources / 参考资料
 

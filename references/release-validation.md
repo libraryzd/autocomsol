@@ -1,5 +1,11 @@
 # Release validation
 
+## 1.0.4 curated folders and initial solver policy (2026-09-30)
+
+New task deliveries retain only the first successful baseline, actual validation models and final-task models under `models/`, and only validation/final-task data under `results/`. Each of `models/`, `results/`, `source/` and `src/` receives a task-language `readme.md`; the source-code guide documents architecture, functions, commands, order and user-choice pauses. Operational status/logs and debugging artifacts are stored separately, with historical evidence preserved.
+
+Initial bring-up prefers a study-generated default solver with the applicable main iteration cap set/read back as 200. COMSOL 6.3 official documentation was checked for automatic sequence generation and FullyCoupled/Segregated property distinctions. This release changes workflow instructions and documentation; static skill/package/link checks were performed. No new COMSOL solve, cap read-back or task-directory behavioral acceptance was run. Historical MATLAB regression sources and results remain unchanged.
+
 ## 1.0.3 final-method Word delivery contract (2026-09-29)
 
 Final plans must be rewritten against the actual adopted model/code/settings while preserving proposal and approval history. Plans introduce the simulation task, explain scientific modeling rationale/necessary theory, then specify COMSOL settings. User-facing proposals, final plans and reports use DOCX in the simulation-task request language, with native editable OMML formulas and mathematical variables. Added a report outline and self-contained document-generation/consistency/equation/layout requirements; the final settings and validation outcome must agree across documents and model evidence.

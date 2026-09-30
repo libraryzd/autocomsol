@@ -38,6 +38,7 @@ Skill 规定工作流程，MCP 提供执行连接，LiveLink 提供 COMSOL 接�
 - 注册前备份 Codex 配置，保留其他 MCP 项。
 - 针对新仿真先提出具体方案，等待用户确认。
 - 生成 MATLAB 源码、记录错误、定点修复并复测。
+- 初次调通优先采用研究自动生成的默认求解器，并将适用的主迭代上限设为 200，读取确认实际设置。
 - 先按任务跑通模型，再提供网格、相对容差、算例验证三个独立选项，也可不进行进一步验证。
 - 交付带解的 `.mph`、源码、结果、图表、反映最终方案的 Word 规划、Word 报告及文件校验清单。
 - 保存简短且经过验证的错误解决记录，供后续任务检索。
@@ -148,6 +149,10 @@ MATLAB/COMSOL 实际版本，并运行自带验收案例，报告通过项与未
 
 规划与报告均交付 **Word `.docx` 文件，语言跟随仿真任务的提问语言**：中文提问输出中文，英文提问输出英文；明确指定其他语言时按指定执行。公式、正文中的数学变量及表格中的数学符号均使用 **Word 内置可编辑公式 OMML**，不以公式图片或未转换的 LaTeX 代替。交付前检查内容一致性、公式结构和逐页排版。详见 [Word 交付规范](references/word-delivery.md)。
 
+`models/` 仅保留首次成功跑通的模型、实际验证模型、覆盖各项最终任务的模型，以及 `readme.md`。`results/` 仅保留验证结果、最终任务结果及必要的结果元数据，以及 `readme.md`。两个说明文件逐项列出文件用途，并关联模型、任务和结果。`source/` 默认存放原始输入与参考资料，生成文件说明；`src/readme.md` 说明每个程序文件、结构组成、功能、依赖、具体运行命令和执行顺序。调试模型与检查点放在 `work/`，运行状态和日志放在 `logs/`。详见[目录交付规范](references/delivery-layout.md)。
+
+初次调通优先使用自动生成的默认求解器，将适用的主迭代上限设为 **200**。先检查实际求解器类型和生效的终止条件，再设置相应属性并读回确认，不把所有嵌套求解器一律改为 200。200 是初始偏好，不是强制迭代次数或收敛保证。详见[初始求解器规则及官方 API 依据](references/initial-solver.md)。
+
 典型任务目录：
 
 ```text
@@ -158,14 +163,26 @@ simulation-run/
 │   ├── simulation-plan.docx    # 最终采用的仿真方案
 │   └── simulation-report.docx # 结果与分析报告
 ├── config.json
-├── src/                 # 建模、求解、提取、后处理、验证
-├── models/final.mph
-├── results/             # MAT/CSV、单位和解选择等元数据
+├── source/
+│   └── readme.md        # 原始输入和参考资料的用途
+├── src/
+│   └── readme.md        # 程序文件、结构、运行命令和顺序
+├── models/
+│   ├── readme.md
+│   ├── baseline-first-success.mph
+│   ├── validation/     # 实际执行的所选验证模型
+│   └── final/          # 与各项最终任务对应的模型
+├── results/
+│   ├── readme.md
+│   ├── validation/     # 所选验证结果
+│   └── final/          # 最终任务结果
 ├── figures/
 ├── environment.json
 ├── manifest.json        # 文件哈希清单
+├── work/               # 调试和探索文件，不混入正式结果
 └── logs/
     ├── run.log
+    ├── validation-status.json
     └── lessons.jsonl    # 仅记录已验证的修复
 ```
 

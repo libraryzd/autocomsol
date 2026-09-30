@@ -38,6 +38,7 @@ The skill specifies the workflow. MCP provides the execution connection. LiveLin
 - Back up Codex configuration and preserve unrelated MCP entries.
 - Prepare a simulation plan for confirmation before running a new problem.
 - Generate MATLAB source files, capture failures, and verify targeted fixes.
+- Start initial bring-up with the study-generated default solver and an applicable main iteration cap of 200, inspecting and recording the effective setting.
 - First get the requested model running, then offer independent mesh, relative-tolerance and reference-case validation choices, including no further validation.
 - Deliver a solved `.mph`, MATLAB sources, results, figures, a final-method Word plan, a Word report, and artifact hashes.
 - Retain concise, verified troubleshooting lessons for future tasks.
@@ -151,6 +152,10 @@ At completion, the plan is rewritten to describe the **method actually adopted**
 
 Both the plan and report are delivered as **Word `.docx` files in the language of the simulation-task request**: Chinese for a Chinese request, English for an English request, unless another language is explicitly requested. Formulas and inline mathematical variables use **native editable Word equations (OMML)**, including inside tables. Equation images and raw LaTeX are not substitutes. Document consistency, equation representation and rendered page layout are checked before delivery. See [Word delivery requirements](references/word-delivery.md).
 
+`models/` retains only the first successful baseline, actual validation models and final models covering every requested task, plus `readme.md`. `results/` retains only validation/final-task results and essential result metadata, plus `readme.md`. The readmes identify each file and map results to models and tasks. Original inputs/references go in `source/` with a file inventory; executable programs go in `src/`, whose `readme.md` covers every file, architecture, functions, exact commands, dependencies and execution order. Debugging/checkpoint artifacts stay in `work/`; operational status and logs stay in `logs/`. See [delivery layout](references/delivery-layout.md).
+
+For initial bring-up, prefer the automatic default solver sequence and a main applicable iteration limit of **200**. Inspect the actual solver type and active stopping mode, then set/read back the corresponding property; do not apply 200 indiscriminately to every nested solver. This is a starting preference, not a forced iteration count or convergence guarantee. Details and official API references are in [initial solver policy](references/initial-solver.md).
+
 Typical task output:
 
 ```text
@@ -161,14 +166,26 @@ simulation-run/
 │   ├── simulation-plan.docx    # Final adopted method
 │   └── simulation-report.docx # Results and interpretation
 ├── config.json
-├── src/                 # Build, solve, extract, postprocess, validate
-├── models/final.mph
-├── results/             # MAT/CSV and units/solution metadata
+├── source/
+│   └── readme.md        # Original inputs/references and uses
+├── src/
+│   └── readme.md        # Program files, architecture, commands and run order
+├── models/
+│   ├── readme.md
+│   ├── baseline-first-success.mph
+│   ├── validation/     # Actual selected validation models
+│   └── final/          # Final models mapped to each task
+├── results/
+│   ├── readme.md
+│   ├── validation/     # Selected validation results
+│   └── final/          # Final-task results
 ├── figures/
 ├── environment.json
 ├── manifest.json        # Artifact hashes
+├── work/               # Exploratory/debug work outside curated output
 └── logs/
     ├── run.log
+    ├── validation-status.json
     └── lessons.jsonl    # Verified fixes only
 ```
 
